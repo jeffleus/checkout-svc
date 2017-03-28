@@ -1,0 +1,29 @@
+{
+  "name": "athlete-svc",
+  "version": "1.0.0",
+  "description": "fuelstation aws microservice for athlete CRUD",
+  "main": "index.js",
+  "dependencies": {
+    "mysql": "^2.13.0",
+    "sequelize": "^3.30.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeffleus/athlete-svc.git"
+  },
+  "keywords": [
+    "fuelstation",
+    "aws",
+    "athlete"
+  ],
+  "author": "jeffleus",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jeffleus/athlete-svc/issues"
+  },
+  "homepage": "https://github.com/jeffleus/athlete-svc#readme"
+}
