@@ -15,10 +15,12 @@ var id = 2;
 var filter = ('93265,93266').split(',');
 console.log("FILTER: ", filter);
 
+Checkout.report().then(function(result) {
+	
 //Checkout.get(null, filter).then(function(result) {
 //Checkout.create(checkout).then(function(result) {
 //Checkout.update(checkout).then(function(result) {
-Checkout.delete(checkout.CheckoutID).then(function(result) {
+//Checkout.delete(checkout.CheckoutID).then(function(result) {
 
 //Choice.get(null, filter).then(function(student) {
 //Choice.create(choice).then(function(student) {

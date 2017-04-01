@@ -144,3 +144,27 @@ module.exports.delete = (event, context, callback) => {
       callback(err);
   });
 };
+
+module.exports.report = (event, context, callback) => {
+  context.callbackWaitsForEmptyEventLoop = false;
+  var response = {
+    statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin" : "*", // Required for CORS support to work
+        "Access-Control-Allow-Credentials" : true // Required for cookies, authorization headers with HTTPS 
+      },
+      body: JSON.stringify({
+      message: 'REPORT from the checkout microservice for FuelStationApp'
+    })
+  };
+	
+  Checkout.report().then(function(data) {
+      console.log('(' + data.length + ') - checkout report successfully run');
+	  response.body = JSON.stringify(data);
+      callback(null, response);
+  }).catch(function(err) {
+      console.log('There was an error deleting the checkout record');
+      console.error(err);
+      callback(err);
+  });
+};
