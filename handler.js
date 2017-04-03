@@ -145,6 +145,38 @@ module.exports.delete = (event, context, callback) => {
   });
 };
 
+module.exports.history = (event, context, callback) => {
+  context.callbackWaitsForEmptyEventLoop = false;
+  var response = {
+    statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin" : "*", // Required for CORS support to work
+        "Access-Control-Allow-Credentials" : true // Required for cookies, authorization headers with HTTPS 
+      },
+      body: JSON.stringify({
+      message: 'REPORT from the checkout microservice for FuelStationApp'
+    })
+  };
+	
+  var id = (event.pathParameters && event.pathParameters.sid) ? event.pathParameters.sid : null;
+  if (!id) {
+      callback(null, {
+          statusCode: 400,
+          body: JSON.stringify({ message: 'Valid checkout id was not passed to the delete method.' })
+      })
+  }
+	
+  Checkout.history(id).then(function(data) {
+      console.log('(' + data.length + ') - checkout history successfully run');
+	  response.body = JSON.stringify(data);
+      callback(null, response);
+  }).catch(function(err) {
+      console.log('There was an error running the checkout history');
+      console.error(err);
+      callback(err);
+  });
+};
+
 module.exports.report = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
   var response = {

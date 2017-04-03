@@ -4,18 +4,25 @@ var args = process.argv.slice(2);
 //console.log(process.argv);
 
 var checkout = {
-    CheckoutID: 93267,
+    //CheckoutID: 93267,
 	StudentSportID: 1060, 
     isArchived: true,
     CreateDate: new Date(2017,2,26,12,30),
-    ArchiveDate: new Date(2017,2,26,15,20)
+    ArchiveDate: new Date(2017,2,26,15,20),
+	CheckoutChoices: [
+		{ ChoiceID: 4, isSnack: 1, type: 0},
+		{ ChoiceID: 3198, isSnack: 0, type: 1}
+	]
 };
 
-var id = 2;
+var id = '704731996';
 var filter = ('93265,93266').split(',');
 console.log("FILTER: ", filter);
 
-Checkout.report().then(function(result) {
+Checkout.create(checkout).then(function(result) {
+
+//Checkout.report().then(function(result) {
+//Checkout.history(id).then(function(result) {
 	
 //Checkout.get(null, filter).then(function(result) {
 //Checkout.create(checkout).then(function(result) {

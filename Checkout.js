@@ -10,12 +10,13 @@ var sequelize = new Sequelize('FuelStation_EDA', Config.username, Config.passwor
         idle: 100
     }
 });
+var moduleName = "CHECKOUTS:";
 
 var Checkout = sequelize.define('checkout', {
   CheckoutID: { 
 	  type: Sequelize.INTEGER, 
 	  primaryKey: true, 
-      autoincrement: true, 
+      autoIncrement: true, 
 	  field: 'CheckoutID' 
   }, 
   StudentSportID: { type: Sequelize.INTEGER, field: 'StudentSportID' },
@@ -26,7 +27,24 @@ var Checkout = sequelize.define('checkout', {
 	tableName: 'Checkouts'
 });
 
-var moduleName = "CHECKOUTS:";
+var CheckoutChoice = sequelize.define('checkoutchoice', {
+  CheckoutChoiceID: { 
+	  type: Sequelize.INTEGER, 
+	  primaryKey: true, 
+      autoincrement: true, 
+	  field: 'CheckoutChoiceID' 
+  }, 
+  //CheckoutID: { type: Sequelize.INTEGER, field: 'CheckoutID' },
+  ChoiceID: { type: Sequelize.INTEGER, field: 'ChoiceID' },
+  isSnack: { type: Sequelize.BOOLEAN, field: 'IsSnack' },
+  type: { type: Sequelize.INTEGER, field: 'Type' }
+}, {
+	tableName: 'CheckoutChoices'
+});
+console.info(moduleName, ' create Checkout hasMany association');
+Checkout.hasMany(CheckoutChoice, {as: 'CheckoutChoices', foreignKey: 'CheckoutID'});
+CheckoutChoice.belongsTo(Checkout, {foreignKey: 'CheckoutID'});
+
 
 module.exports.get = function(id,filter) {
     if (!id) return list(filter);
@@ -67,11 +85,19 @@ function list(filter) {
 }
 
 module.exports.create = function(json) {
+	var _checkout = Checkout.build(json);
+//	json.CheckoutChoices.forEach(function(choiceJSON) {
+//		var _choice = CheckoutChoice.build(choiceJSON);
+//		console.log(_choice);
+//		_checkout.
+//	}
+	//console.info(sequelize.models);	
+	
 	return sequelize.sync().then(function() {
 		console.info(moduleName, 'create a new checkout using JSON provided');
 		console.error('need to add json validation to checkout creation');
 		var checkoutJson = json;//JSON.parse(json);
-		return Checkout.create(json).then(function(checkout) {
+		return Checkout.create(json, { include: [ {model: CheckoutChoice, as: 'CheckoutChoices'} ] }).then(function(checkout) {
 			console.info('checkout successfully created');
 			return checkout;
 		});
@@ -103,9 +129,20 @@ module.exports.delete = function(id) {
 	});
 };
 
+module.exports.history = function(id) {
+	console.info(moduleName, 'checkout hisotry by student id');
+	var sql = 'CALL checkout_history (\'' 
+		+ id + '\', \'' + JSON.stringify(new Date()).substring(1,11) + '\')';
+	console.info (sql);
+	return sequelize.query(sql).then(function(result) {
+		console.info(moduleName, result);
+		return result;
+	});
+};
+
 module.exports.report = function() {
 	return sequelize.query('CALL team_checkouts()').then(function(result) {
-		console.info(moduleName, result);
+		console.info(moduleName, 'completed team checkout summary report.');
 		return result;
 	});
 }
