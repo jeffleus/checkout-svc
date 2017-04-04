@@ -49,8 +49,12 @@ CheckoutChoice.belongsTo(Checkout, {foreignKey: 'CheckoutID'});
 module.exports.get = function(id,filter) {
     if (!id) return list(filter);
     console.log(moduleName, 'calling getSingle with id: ' + id);
+    var options = {
+        where: { CheckoutID: id },
+        include: [ {model: CheckoutChoice, as: 'CheckoutChoices'} ]
+    };
     return sequelize.sync().then(function() {
-        return Checkout.findById(id).then(function(checkout) {
+        return Checkout.findOne(options).then(function(checkout) {
             console.info(moduleName, 'checkout record found');
             return {
                 count: (checkout)?1:0,
@@ -67,10 +71,11 @@ function list(filter) {
             var filterOption = {
                 where: {
                     CheckoutID: filter 
-                } 
+                },
+                include: [ {model: CheckoutChoice, as: 'CheckoutChoices'} ]
             };
             return Checkout.findAndCountAll(filterOption);
-        } else return Checkout.findAndCountAll();
+        } else return Checkout.findAndCountAll({ include: [ {model: CheckoutChoice, as: 'CheckoutChoices'} ] });
     }).then(function(result) {
 		//return Athlete.findAndCountAll().then(function(result) {
         var checkouts = [];
@@ -78,7 +83,7 @@ function list(filter) {
             checkouts.push(checkoutRow.dataValues);
         });
         return {
-            count: result.count,
+            count: result.rows.length,
             checkouts: checkouts
         };
 	});
@@ -111,7 +116,8 @@ module.exports.update = function(json) {
 		var c = json;//JSON.parse(json);
 		return Checkout.update(
 			json,
-			{ where: { CheckoutID: json.CheckoutID } }
+			{ where: { CheckoutID: json.CheckoutID },
+                include: [ {model: CheckoutChoice, as: 'CheckoutChoices'} ]}
 		).then(function(result) {
 			console.info(moduleName, 'checkout successfully updated');
 			return result;
@@ -135,8 +141,12 @@ module.exports.history = function(id) {
 		+ id + '\', \'' + JSON.stringify(new Date()).substring(1,11) + '\')';
 	console.info (sql);
 	return sequelize.query(sql).then(function(result) {
-		console.info(moduleName, result);
-		return result;
+		//console.info(moduleName, result[0]);
+        var history = {};
+        result.forEach(function(row) {
+            history[row.Category] = row.Count;
+        })
+		return history;
 	});
 };
 

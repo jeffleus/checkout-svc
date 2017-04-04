@@ -15,14 +15,17 @@ var checkout = {
 	]
 };
 
-var id = '704731996';
+var id = '93265';
+var sid = '704731996';
 var filter = ('93265,93266').split(',');
 console.log("FILTER: ", filter);
 
-Checkout.create(checkout).then(function(result) {
-
+//Checkout.create(checkout).then(function(result) {
+//Checkout.get(null, filter).then(function(result) {
+//Checkout.get(id).then(function(result) {
+    
 //Checkout.report().then(function(result) {
-//Checkout.history(id).then(function(result) {
+Checkout.history(sid).then(function(result) {
 	
 //Checkout.get(null, filter).then(function(result) {
 //Checkout.create(checkout).then(function(result) {
@@ -45,7 +48,14 @@ Checkout.create(checkout).then(function(result) {
 //Athletes.get(id, filter).then(function(student) {
 //	console.log(student);
     
-	console.log(result);
+//	console.log(result.count);
+//    result.checkouts.forEach(function(co) {
+//        console.log(co.CheckoutID, co.StudentSportID);
+//        co.CheckoutChoices.forEach(function(ch) {
+//            console.log('Choice: ', ch.ChoiceID, ch.isSnack);
+//        })
+//    })
+    console.log(result);
 	return;
 }).catch(function(err) {
 	console.error(err);
