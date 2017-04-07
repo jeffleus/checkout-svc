@@ -1,4 +1,5 @@
 var Checkout = require('./Checkout');
+var mock = require('./mockDaily');
 
 var args = process.argv.slice(2);
 //console.log(process.argv);
@@ -19,13 +20,14 @@ var id = '93265';
 var sid = '704731996';
 var filter = ('93265,93266').split(',');
 console.log("FILTER: ", filter);
+console.log(mock);
 
 //Checkout.create(checkout).then(function(result) {
 //Checkout.get(null, filter).then(function(result) {
 //Checkout.get(id).then(function(result) {
     
 //Checkout.report().then(function(result) {
-Checkout.history(sid).then(function(result) {
+//Checkout.history(sid).then(function(result) {
 	
 //Checkout.get(null, filter).then(function(result) {
 //Checkout.create(checkout).then(function(result) {
@@ -55,15 +57,16 @@ Checkout.history(sid).then(function(result) {
 //            console.log('Choice: ', ch.ChoiceID, ch.isSnack);
 //        })
 //    })
-    console.log(result);
-	return;
-}).catch(function(err) {
-	console.error(err);
-	return;
-}).finally(function() {
-	Checkout.close();
-	return;
-});
+
+//    console.log(result);
+//	return;
+//}).catch(function(err) {
+//	console.error(err);
+//	return;
+//}).finally(function() {
+//	Checkout.close();
+//	return;
+//});
 
 function _logTest(id, filter) {
     console.log('ID: ', id);

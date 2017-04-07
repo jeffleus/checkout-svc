@@ -56,12 +56,6 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  hello:
-    handler: handler.hello
-    events:
-      - http:
-          path: checkout/hello
-          method: get
   get:
     handler: handler.get
     timeout: 3
@@ -71,7 +65,7 @@ functions:
           method: get
           cors: true
           authorizer:
-            arn: arn:aws:cognito-idp:us-west-2:236711959566:userpool/us-west-2_HqCU8elu4
+            arn: arn:aws:cognito-idp:us-west-2:236711959566:userpool/us-west-2_KMI3gTfQw
   list:
     handler: handler.get
     timeout: 3
@@ -81,7 +75,7 @@ functions:
           method: get
           cors: true
           authorizer:
-            arn: arn:aws:cognito-idp:us-west-2:236711959566:userpool/us-west-2_HqCU8elu4
+            arn: arn:aws:cognito-idp:us-west-2:236711959566:userpool/us-west-2_KMI3gTfQw
   create:
     handler: handler.create
     timeout: 3
@@ -91,7 +85,7 @@ functions:
           method: post
           cors: true
           authorizer:
-            arn: arn:aws:cognito-idp:us-west-2:236711959566:userpool/us-west-2_HqCU8elu4
+            arn: arn:aws:cognito-idp:us-west-2:236711959566:userpool/us-west-2_KMI3gTfQw
   update:
     handler: handler.update
     timeout: 3
@@ -101,7 +95,7 @@ functions:
           method: put
           cors: true
           authorizer:
-            arn: arn:aws:cognito-idp:us-west-2:236711959566:userpool/us-west-2_HqCU8elu4
+            arn: arn:aws:cognito-idp:us-west-2:236711959566:userpool/us-west-2_KMI3gTfQw
   delete:
     handler: handler.delete
     timeout: 3
@@ -111,7 +105,7 @@ functions:
           method: delete
           cors: true
           authorizer:
-            arn: arn:aws:cognito-idp:us-west-2:236711959566:userpool/us-west-2_HqCU8elu4
+            arn: arn:aws:cognito-idp:us-west-2:236711959566:userpool/us-west-2_KMI3gTfQw
   history:
     handler: handler.history
     timeout: 3
@@ -121,7 +115,7 @@ functions:
           method: GET
           cors: true
           authorizer:
-            arn: arn:aws:cognito-idp:us-west-2:236711959566:userpool/us-west-2_HqCU8elu4
+            arn: arn:aws:cognito-idp:us-west-2:236711959566:userpool/us-west-2_KMI3gTfQw
   report:
     handler: handler.report
     timeout: 3
@@ -131,7 +125,37 @@ functions:
           method: GET
           cors: true
           authorizer:
-            arn: arn:aws:cognito-idp:us-west-2:236711959566:userpool/us-west-2_HqCU8elu4
+            arn: arn:aws:cognito-idp:us-west-2:236711959566:userpool/us-west-2_KMI3gTfQw
+  daily:
+    handler: handler.daily
+    timeout: 3
+    events:
+      - http:
+          path: report/checkouts/daily
+          method: GET
+          cors: true
+          authorizer:
+            arn: arn:aws:cognito-idp:us-west-2:236711959566:userpool/us-west-2_KMI3gTfQw
+  archived:
+    handler: handler.archived
+    timeout: 3
+    events:
+      - http:
+          path: checkouts/Archived
+          method: GET
+          cors: true
+          authorizer:
+            arn: arn:aws:cognito-idp:us-west-2:236711959566:userpool/us-west-2_KMI3gTfQw
+  unarchived:
+    handler: handler.unarchived
+    timeout: 3
+    events:
+      - http:
+          path: checkouts/Unarchived
+          method: GET
+          cors: true
+          authorizer:
+            arn: arn:aws:cognito-idp:us-west-2:236711959566:userpool/us-west-2_KMI3gTfQw
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events

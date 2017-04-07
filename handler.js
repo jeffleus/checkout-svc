@@ -1,26 +1,15 @@
 'use strict';
 var Checkout = require('./Checkout');
+//temp mocks for getting the demo running smooth
+var mockDaily = require('./mockDaily');
+var mockUnarchived = require('./mockUnarchived');
+var mockArchived = require('./mockArchived');
 var SMS = require('./SMS');
 const AWS = require('aws-sdk');
 AWS.config.region = 'us-west-2';
 var sns = new AWS.SNS();
 
 var moduleName = 'checkout-svc';
-
-module.exports.hello = (event, context, callback) => {
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: 'Hello from the checkout microservice for FuelStationApp'
-//      input: event,
-    }),
-  };
-
-  callback(null, response);
-
-  // Use this code if you don't use the http event with the LAMBDA-PROXY integration
-  // callback(null, { message: 'Go Serverless v1.0! Your function executed successfully!', event });
-};
 
 module.exports.get = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
@@ -199,4 +188,52 @@ module.exports.report = (event, context, callback) => {
       console.error(err);
       callback(err);
   });
+};
+
+module.exports.daily = (event, context, callback) => {
+  context.callbackWaitsForEmptyEventLoop = false;
+  var response = {
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin" : "*", // Required for CORS support to work
+        "Access-Control-Allow-Credentials" : true // Required for cookies, authorization headers with HTTPS 
+      },
+      body: ""
+  };
+	
+  console.log('attaching mockDaily data to the repsonse');
+  response.body = JSON.stringify(mockDaily);
+  callback(null, response);
+};
+
+module.exports.unarchived = (event, context, callback) => {
+  context.callbackWaitsForEmptyEventLoop = false;
+  var response = {
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin" : "*", // Required for CORS support to work
+        "Access-Control-Allow-Credentials" : true // Required for cookies, authorization headers with HTTPS 
+      },
+      body: ""
+  };
+	
+  console.log('attaching mockUnarchived data to the repsonse');
+  response.body = JSON.stringify(mockUnarchived);
+  callback(null, response);
+};
+
+module.exports.archived = (event, context, callback) => {
+  context.callbackWaitsForEmptyEventLoop = false;
+  var response = {
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin" : "*", // Required for CORS support to work
+        "Access-Control-Allow-Credentials" : true // Required for cookies, authorization headers with HTTPS 
+      },
+      body: ""
+  };
+	
+  console.log('attaching mockArchived data to the repsonse');
+  response.body = JSON.stringify(mockArchived);
+  callback(null, response);
 };
