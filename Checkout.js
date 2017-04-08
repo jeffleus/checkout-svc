@@ -19,7 +19,7 @@ var Checkout = sequelize.define('checkout', {
       autoIncrement: true, 
 	  field: 'CheckoutID' 
   }, 
-  StudentSportID: { type: Sequelize.INTEGER, field: 'StudentSportID' },
+//  StudentSportID: { type: Sequelize.INTEGER, field: 'StudentSportID' },
   isArchived: { type: Sequelize.BOOLEAN, field: 'isArchived' },
   CreateDate: { type: Sequelize.DATE, field: 'CreateDate' },
   ArchiveDate: { type: Sequelize.DATE, field: 'ArchiveDate' }
@@ -45,20 +45,39 @@ console.info(moduleName, ' create Checkout hasMany association');
 Checkout.hasMany(CheckoutChoice, {as: 'CheckoutChoices', foreignKey: 'CheckoutID'});
 CheckoutChoice.belongsTo(Checkout, {foreignKey: 'CheckoutID'});
 
+var Athlete = sequelize.define('athlete', {
+  AthleteID: { 
+	  type: Sequelize.INTEGER, 
+	  primaryKey: true, 
+	  autoincrement: true, 
+	  field: 'StudentSportID' 
+  }, 
+  firstName: { type: Sequelize.STRING, field: 'firstname' }, 
+  lastName: { type: Sequelize.STRING, field: 'lastname' }, 
+  schoolid: { type: Sequelize.STRING, field: 'schoolsidnumber' },
+  sportCode: { type: Sequelize.STRING, field: 'SportCodeID' }
+}, {
+	tableName: 'StudentSport'
+});
+console.info(moduleName, ' create Checkout hasMany association');
+Athlete.hasMany(Checkout, {as: 'Checkouts', foreignKey: 'StudentSportID'});
+Checkout.belongsTo(Athlete, {as: 'Athlete', foreignKey: 'StudentSportID'});
+
 
 module.exports.get = function(id,filter) {
     if (!id) return list(filter);
     console.log(moduleName, 'calling getSingle with id: ' + id);
     var options = {
         where: { CheckoutID: id },
-        include: [ {model: CheckoutChoice, as: 'CheckoutChoices'} ]
+        include: [ {model: CheckoutChoice, as: 'CheckoutChoices'}, {model:Athlete, as:'Athlete'} ]
     };
     return sequelize.sync().then(function() {
         return Checkout.findOne(options).then(function(checkout) {
             console.info(moduleName, 'checkout record found');
+            checkout.Athlete = checkout.Athlete.dataValues;
             return {
                 count: (checkout)?1:0,
-                checkouts: [ (checkout)?checkout.dataValues:null ]
+                checkouts: [ (checkout)?checkout.get({plain:true}):null ]
             };
         })
     });
@@ -72,7 +91,7 @@ function list(filter) {
                 where: {
                     CheckoutID: filter 
                 },
-                include: [ {model: CheckoutChoice, as: 'CheckoutChoices'} ]
+                include: [ {model: CheckoutChoice, as: 'CheckoutChoices'}, {model:Athlete, as:'Athlete'} ]
             };
             return Checkout.findAndCountAll(filterOption);
         } else return Checkout.findAndCountAll({ include: [ {model: CheckoutChoice, as: 'CheckoutChoices'} ] });
@@ -80,7 +99,37 @@ function list(filter) {
 		//return Athlete.findAndCountAll().then(function(result) {
         var checkouts = [];
         result.rows.forEach(function(checkoutRow) {
-            checkouts.push(checkoutRow.dataValues);
+            checkouts.push(checkoutRow.get({plain:true}));
+        });
+        return {
+            count: result.rows.length,
+            checkouts: checkouts
+        };
+	});
+}
+
+module.exports.unarchived = function() {
+    console.log(moduleName, 'calling getAll because no id provided');
+	return sequelize.sync().then(function() {
+        var start = new Date(new Date() - 24 * 60 * 60 * 1000 * 18);
+        var end = new Date(new Date() - 24 * 60 * 60 * 1000 * 17); 
+        var filterOption = {
+            where:{
+                $and: [
+                    { isArchived: true },
+                    {
+                      CreateDate: { between: [ start, end] }
+                    }
+                  ]
+                },
+            include: [ {model: CheckoutChoice, as: 'CheckoutChoices'}, {model:Athlete, as:'Athlete'} ]
+        };
+        return Checkout.findAndCountAll(filterOption);
+    }).then(function(result) {
+		//return Athlete.findAndCountAll().then(function(result) {
+        var checkouts = [];
+        result.rows.forEach(function(checkoutRow) {
+            checkouts.push(checkoutRow.get({plain:true}));
         });
         return {
             count: result.rows.length,
