@@ -217,9 +217,15 @@ module.exports.unarchived = (event, context, callback) => {
       body: ""
   };
 	
-  console.log('attaching mockUnarchived data to the repsonse');
-  response.body = JSON.stringify(mockUnarchived);
-  callback(null, response);
+  Checkout.today(false).then(function(result) {
+      console.log('(' + result.length + ') - checkout UNarchive for today successfully run');
+	  response.body = JSON.stringify(result);
+      callback(null, response);
+  }).catch(function(err) {
+      console.log('There was an error running the list of checkout UNarchive for today');
+      console.error(err);
+      callback(err);
+  });
 };
 
 module.exports.archived = (event, context, callback) => {
@@ -233,7 +239,13 @@ module.exports.archived = (event, context, callback) => {
       body: ""
   };
 	
-  console.log('attaching mockArchived data to the repsonse');
-  response.body = JSON.stringify(mockArchived);
-  callback(null, response);
+  Checkout.today(true).then(function(result) {
+      console.log('(' + result.length + ') - checkout archive for today successfully run');
+	  response.body = JSON.stringify(result);
+      callback(null, response);
+  }).catch(function(err) {
+      console.log('There was an error running the list of checkout archive for today');
+      console.error(err);
+      callback(err);
+  });
 };

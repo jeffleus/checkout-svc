@@ -17,18 +17,18 @@ var checkout = {
 };
 
 var id = '93302';
-var sid = '704731996';
+var sid = '918';
 var filter = ('93265,93266').split(',');
 console.log("FILTER: ", filter);
 //console.log(mock);
 
 //Checkout.create(checkout).then(function(result) {
 //Checkout.get(null, filter).then(function(result) {
-Checkout.unarchived().then(function(result) {
+//Checkout.today(false).then(function(result) {
 //Checkout.get(id).then(function(result) {
     
 //Checkout.report().then(function(result) {
-//Checkout.history(sid).then(function(result) {
+Checkout.history(sid).then(function(result) {
 	
 //Checkout.get(null, filter).then(function(result) {
 //Checkout.create(checkout).then(function(result) {
@@ -59,7 +59,6 @@ Checkout.unarchived().then(function(result) {
 //        })
 //    })
 
-    console.log('CheckoutChoices:');
     console.log(result);
 	return;
 }).catch(function(err) {

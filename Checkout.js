@@ -63,13 +63,32 @@ console.info(moduleName, ' create Checkout hasMany association');
 Athlete.hasMany(Checkout, {as: 'Checkouts', foreignKey: 'StudentSportID'});
 Checkout.belongsTo(Athlete, {as: 'Athlete', foreignKey: 'StudentSportID'});
 
+var Choice = sequelize.define('choice', {
+  ChoiceID: { 
+	  type: Sequelize.INTEGER, 
+	  primaryKey: true, 
+      autoincrement: true, 
+	  field: 'ChoiceID' 
+  }, 
+  CategoryID: { type: Sequelize.INTEGER, field: 'CategoryID' },
+  name: { type: Sequelize.STRING, field: 'Name' }, 
+  description: { type: Sequelize.STRING, field: 'Description' },
+  type: { type: Sequelize.INTEGER, field: 'Type' },
+  isActive: { type: Sequelize.BOOLEAN, field: 'IsActive' }
+}, {
+	tableName: 'Choices'
+});
+console.info(moduleName, ' create CheckoutChoice belongsTo Choice association');
+Choice.hasMany(CheckoutChoice, {as: 'CheckoutChoices', foreignKey: 'ChoiceID'});
+CheckoutChoice.belongsTo(Choice, {as: 'Choice', foreignKey: 'ChoiceID'});
+
 
 module.exports.get = function(id,filter) {
     if (!id) return list(filter);
     console.log(moduleName, 'calling getSingle with id: ' + id);
     var options = {
         where: { CheckoutID: id },
-        include: [ {model: CheckoutChoice, as: 'CheckoutChoices'}, {model:Athlete, as:'Athlete'} ]
+        include: [ {model: CheckoutChoice, as: 'CheckoutChoices', include: [{model:Choice, as:'Choice'}]}, {model:Athlete, as:'Athlete'} ]
     };
     return sequelize.sync().then(function() {
         return Checkout.findOne(options).then(function(checkout) {
@@ -108,22 +127,24 @@ function list(filter) {
 	});
 }
 
-module.exports.unarchived = function() {
+module.exports.today = function(isArchive) {
     console.log(moduleName, 'calling getAll because no id provided');
 	return sequelize.sync().then(function() {
-        var start = new Date(new Date() - 24 * 60 * 60 * 1000 * 18);
-        var end = new Date(new Date() - 24 * 60 * 60 * 1000 * 17); 
+		var today = new Date();
+		var start = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+		var end = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
         var filterOption = {
             where:{
                 $and: [
-                    { isArchived: true },
+                    { isArchived: isArchive },
                     {
                       CreateDate: { between: [ start, end] }
                     }
                   ]
                 },
-            include: [ {model: CheckoutChoice, as: 'CheckoutChoices'}, {model:Athlete, as:'Athlete'} ]
+            include: [ {model: CheckoutChoice, as: 'CheckoutChoices', include: [{model:Choice, as:'Choice'}]}, {model:Athlete, as:'Athlete'} ]
         };
+		console.log(filterOption);
         return Checkout.findAndCountAll(filterOption);
     }).then(function(result) {
 		//return Athlete.findAndCountAll().then(function(result) {
@@ -190,12 +211,7 @@ module.exports.history = function(id) {
 		+ id + '\', \'' + JSON.stringify(new Date()).substring(1,11) + '\')';
 	console.info (sql);
 	return sequelize.query(sql).then(function(result) {
-		//console.info(moduleName, result[0]);
-        var history = {};
-        result.forEach(function(row) {
-            history[row.Category] = row.Count;
-        })
-		return history;
+		return result[0];
 	});
 };
 
