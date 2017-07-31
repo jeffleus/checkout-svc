@@ -16,10 +16,10 @@ var checkout = {
 	]
 };
 
-var id = '93302';
-var sid = '918';
-var filter = ('93265,93266').split(',');
-console.log("FILTER: ", filter);
+//var id = '93302';
+var sid = '905';
+//var filter = ('93265,93266').split(',');
+//console.log("FILTER: ", filter);
 //console.log(mock);
 
 //Checkout.create(checkout).then(function(result) {
@@ -28,6 +28,8 @@ console.log("FILTER: ", filter);
 //Checkout.get(id).then(function(result) {
     
 //Checkout.report().then(function(result) {
+
+//run Checkout history to test for proper offset work
 Checkout.history(sid).then(function(result) {
 	
 //Checkout.get(null, filter).then(function(result) {

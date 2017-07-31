@@ -207,8 +207,14 @@ module.exports.delete = function(id) {
 
 module.exports.history = function(id) {
 	console.info(moduleName, 'checkout hisotry by student id');
+	//offset from UTC to acheive PDT for summer daylight savings on the west coast
+	var offset = (-7) * 60 * 60 * 1000;
+	//get the date using the offset for proper date only portion
+	console.log('now_local: ' + (new Date()).toString());
+	var now = new Date( (new Date()).getTime() + offset );
+	console.log('now_offset: ' + now.toString());
 	var sql = 'CALL checkout_history (\'' 
-		+ id + '\', \'' + JSON.stringify(new Date()).substring(1,11) + '\')';
+		+ id + '\', \'' + JSON.stringify(now).substring(1,11) + '\')';
 	console.info (sql);
 	return sequelize.query(sql).then(function(result) {
 		return result[0];
