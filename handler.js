@@ -201,9 +201,15 @@ module.exports.daily = (event, context, callback) => {
       body: ""
   };
 	
-  console.log('attaching mockDaily data to the repsonse');
-  response.body = JSON.stringify(mockDaily);
-  callback(null, response);
+  console.log('running daily_checkouts() sproc for todays checkouts');
+  Checkout.daily().then(function(data) {
+	  response.body = JSON.stringify(data);
+	  callback(null, response);
+  }).catch(function(err) {
+      console.log('There was an error getting daily report of checkout records');
+      console.error(err);
+      callback(err);
+  });
 };
 
 module.exports.unarchived = (event, context, callback) => {
