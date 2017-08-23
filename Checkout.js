@@ -159,6 +159,22 @@ module.exports.today = function(isArchive) {
 	});
 }
 
+module.exports.daily = function(id) {
+	console.info(moduleName, 'daily checkout report');
+	//offset from UTC to acheive PDT for summer daylight savings on the west coast
+	var offset = (-7) * 60 * 60 * 1000;
+	//get the date using the offset for proper date only portion
+	console.log('now_local: ' + (new Date()).toString());
+	var now = new Date( (new Date()).getTime() + offset );
+	console.log('now_offset: ' + now.toString());
+	var sql = 'CALL daily_checkouts();' ;
+	//	+ id + '\', \'' + JSON.stringify(now).substring(1,11) + '\')';
+	console.info (sql);
+	return sequelize.query(sql).then(function(result) {
+		return result;
+	});
+};
+
 module.exports.create = function(json) {
 	var _checkout = Checkout.build(json);
 //	json.CheckoutChoices.forEach(function(choiceJSON) {
