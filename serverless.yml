@@ -136,6 +136,16 @@ functions:
           cors: true
           authorizer:
             arn: arn:aws:cognito-idp:us-west-2:236711959566:userpool/us-west-2_KMI3gTfQw
+  monthly:
+    handler: handler.monthly
+    timeout: 3
+    events:
+      - http:
+          path: report/checkouts/monthly/{year}/{month}
+          method: GET
+          cors: true
+          authorizer:
+            arn: arn:aws:cognito-idp:us-west-2:236711959566:userpool/us-west-2_KMI3gTfQw
   archived:
     handler: handler.archived
     timeout: 3

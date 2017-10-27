@@ -212,6 +212,37 @@ module.exports.daily = (event, context, callback) => {
   });
 };
 
+module.exports.monthly = (event, context, callback) => {
+  context.callbackWaitsForEmptyEventLoop = false;
+  var response = {
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin" : "*", // Required for CORS support to work
+        "Access-Control-Allow-Credentials" : true // Required for cookies, authorization headers with HTTPS 
+      },
+      body: ""
+  };
+	
+  var month = (event.pathParameters && event.pathParameters.month) ? event.pathParameters.month : null;
+  var year = (event.pathParameters && event.pathParameters.year) ? event.pathParameters.year : null;
+  if (!month || !year) {
+      callback(null, {
+          statusCode: 400,
+          body: JSON.stringify({ message: 'Valid month/year args not passed to the monthly item report.' })
+      })
+  }
+	
+  Checkout.monthly(month, year).then(function(data) {
+      console.log('(' + data.length + ') - monthly item report successfully run');
+	  response.body = JSON.stringify(data);
+      callback(null, response);
+  }).catch(function(err) {
+      console.log('There was an error running the item monthly report');
+      console.error(err);
+      callback(err);
+  });
+};
+
 module.exports.unarchived = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
   var response = {

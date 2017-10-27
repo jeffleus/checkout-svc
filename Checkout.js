@@ -175,6 +175,17 @@ module.exports.daily = function(id) {
 	});
 };
 
+module.exports.monthly = function(month, year) {
+	console.info(moduleName, 'monthly item report');
+	//get the date using the offset for proper date only portion
+	var sql = 'CALL item_monthly(' + month + ', ' + year + ');' ;
+	//	+ id + '\', \'' + JSON.stringify(now).substring(1,11) + '\')';
+	console.info (sql);
+	return sequelize.query(sql).then(function(result) {
+		return result;
+	});
+};
+
 module.exports.create = function(json) {
 	var _checkout = Checkout.build(json);
 //	json.CheckoutChoices.forEach(function(choiceJSON) {
