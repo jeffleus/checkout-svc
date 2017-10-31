@@ -20,6 +20,7 @@ var Checkout = sequelize.define('checkout', {
 	  field: 'CheckoutID' 
   }, 
 //  StudentSportID: { type: Sequelize.INTEGER, field: 'StudentSportID' },
+  LocationID: { type: Sequelize.INTEGER, field: 'LocationID' },
   isArchived: { type: Sequelize.BOOLEAN, field: 'isArchived' },
   CreateDate: { type: Sequelize.DATE, field: 'CreateDate' },
   ArchiveDate: { type: Sequelize.DATE, field: 'ArchiveDate' }
