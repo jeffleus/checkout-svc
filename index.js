@@ -16,14 +16,14 @@ var checkout = {
 	]
 };
 
-//var id = '93302';
-var sid = '905';
+var id = '96562';
+//var sid = '905';
 //var filter = ('93265,93266').split(',');
 //console.log("FILTER: ", filter);
 //console.log(mock);
 
 //Checkout.create(checkout).then(function(result) {
-//Checkout.get(null, filter).then(function(result) {
+Checkout.get(id, null).then(function(result) {
 //Checkout.today(false).then(function(result) {
 //Checkout.get(id).then(function(result) {
     
@@ -32,38 +32,10 @@ var sid = '905';
 //run Checkout history to test for proper offset work
 //Checkout.daily().then(function(result) {
 //Checkout.history(sid).then(function(result) {
-Checkout.monthly(6, 2017).then(function(result) {
+//Checkout.monthly(6, 2017).then(function(result) {
 	
-//Checkout.get(null, filter).then(function(result) {
-//Checkout.create(checkout).then(function(result) {
-//Checkout.update(checkout).then(function(result) {
-//Checkout.delete(checkout.CheckoutID).then(function(result) {
-
-//Choice.get(null, filter).then(function(student) {
-//Choice.create(choice).then(function(student) {
-//Choice.update(choice).then(function(student) {
-    
-//Sport.get(null, filter).then(function(student) {
-//Sport.get('XXX').then(function(student) {
-//Sport.create(sport).then(function(student) {
-//Sport.update(sport).then(function(student) {
-//Sport.delete('XXX').then(function(result) {
-	
-//Athletes.delete(1165).then(function(result) {
-//Athletes.update(ath).then(function(student) {
-//Athletes.create(ath).then(function(student) {
-//Athletes.get(id, filter).then(function(student) {
-//	console.log(student);
-    
-//	console.log(result.count);
-//    result.checkouts.forEach(function(co) {
-//        console.log(co.CheckoutID, co.StudentSportID);
-//        co.CheckoutChoices.forEach(function(ch) {
-//            console.log('Choice: ', ch.ChoiceID, ch.isSnack);
-//        })
-//    })
-
     console.log(result);
+	console.log(result.checkouts[0].CheckoutChoices);
 	return;
 }).catch(function(err) {
 	console.error(err);

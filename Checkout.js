@@ -1,7 +1,7 @@
 'use strict';
 var Sequelize = require('sequelize');
 var Config = require('./Config')();
-var sequelize = new Sequelize('FuelStation_STAN', Config.username, Config.password, {
+var sequelize = new Sequelize('FS_VATECH', Config.username, Config.password, {
 	host: 'callsheet-mysql.cn6x6nhayn9c.us-west-2.rds.amazonaws.com',
 	port: 3306,
     pool: {
@@ -38,7 +38,8 @@ var CheckoutChoice = sequelize.define('checkoutchoice', {
   //CheckoutID: { type: Sequelize.INTEGER, field: 'CheckoutID' },
   ChoiceID: { type: Sequelize.INTEGER, field: 'ChoiceID' },
   isSnack: { type: Sequelize.BOOLEAN, field: 'IsSnack' },
-  type: { type: Sequelize.INTEGER, field: 'Type' }
+  type: { type: Sequelize.INTEGER, field: 'Type' },
+  choiceValue: { type: Sequelize.INTEGER, field: 'choiceValue' }
 }, {
 	tableName: 'CheckoutChoices'
 });
@@ -75,6 +76,7 @@ var Choice = sequelize.define('choice', {
   name: { type: Sequelize.STRING, field: 'Name' }, 
   description: { type: Sequelize.STRING, field: 'Description' },
   type: { type: Sequelize.INTEGER, field: 'Type' },
+  choiceValue: { type: Sequelize.INTEGER, field: 'choiceValue' },
   isActive: { type: Sequelize.BOOLEAN, field: 'IsActive' }
 }, {
 	tableName: 'Choices'
