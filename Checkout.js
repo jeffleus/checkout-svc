@@ -187,6 +187,17 @@ module.exports.monthly = function(month, year) {
 	});
 };
 
+module.exports.summary = function(start, end) {
+	console.info(moduleName, 'fuelstation daily summary report');
+	//get the date using the offset for proper date only portion
+	var sql = 'CALL daily_summary(\'' + start + '\', \'' + end + '\');' ;
+	//	+ id + '\', \'' + JSON.stringify(now).substring(1,11) + '\')';
+	console.info (sql);
+	return sequelize.query(sql).then(function(result) {
+		return result;
+	});
+};
+
 module.exports.create = function(json) {
 	var _checkout = Checkout.build(json);
 //	json.CheckoutChoices.forEach(function(choiceJSON) {

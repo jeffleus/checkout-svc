@@ -32,7 +32,8 @@ var sid = '905';
 //run Checkout history to test for proper offset work
 //Checkout.daily().then(function(result) {
 //Checkout.history(sid).then(function(result) {
-Checkout.monthly(6, 2017).then(function(result) {
+//Checkout.monthly(6, 2017).then(function(result) {
+Checkout.summary('2017-11-01', '2017-11-15').then(function(result) {
 	
 //Checkout.get(null, filter).then(function(result) {
 //Checkout.create(checkout).then(function(result) {
