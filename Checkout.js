@@ -20,6 +20,7 @@ var Checkout = sequelize.define('checkout', {
 	  field: 'CheckoutID' 
   }, 
 //  StudentSportID: { type: Sequelize.INTEGER, field: 'StudentSportID' },
+  LocationID: { type: Sequelize.INTEGER, field: 'LocationID' },
   isArchived: { type: Sequelize.BOOLEAN, field: 'isArchived' },
   CreateDate: { type: Sequelize.DATE, field: 'CreateDate' },
   ArchiveDate: { type: Sequelize.DATE, field: 'ArchiveDate' }
@@ -168,6 +169,28 @@ module.exports.daily = function(id) {
 	var now = new Date( (new Date()).getTime() + offset );
 	console.log('now_offset: ' + now.toString());
 	var sql = 'CALL daily_checkouts();' ;
+	//	+ id + '\', \'' + JSON.stringify(now).substring(1,11) + '\')';
+	console.info (sql);
+	return sequelize.query(sql).then(function(result) {
+		return result;
+	});
+};
+
+module.exports.monthly = function(month, year) {
+	console.info(moduleName, 'monthly item report');
+	//get the date using the offset for proper date only portion
+	var sql = 'CALL item_monthly(' + month + ', ' + year + ');' ;
+	//	+ id + '\', \'' + JSON.stringify(now).substring(1,11) + '\')';
+	console.info (sql);
+	return sequelize.query(sql).then(function(result) {
+		return result;
+	});
+};
+
+module.exports.summary = function(start, end) {
+	console.info(moduleName, 'fuelstation daily summary report');
+	//get the date using the offset for proper date only portion
+	var sql = 'CALL daily_summary(\'' + start + '\', \'' + end + '\');' ;
 	//	+ id + '\', \'' + JSON.stringify(now).substring(1,11) + '\')';
 	console.info (sql);
 	return sequelize.query(sql).then(function(result) {
