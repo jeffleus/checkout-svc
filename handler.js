@@ -274,6 +274,39 @@ module.exports.summary = (event, context, callback) => {
   });
 };
 
+module.exports.items = (event, context, callback) => {
+  context.callbackWaitsForEmptyEventLoop = false;
+  var response = {
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin" : "*", // Required for CORS support to work
+        "Access-Control-Allow-Credentials" : true // Required for cookies, authorization headers with HTTPS 
+      },
+      body: ""
+  };
+	
+  var start = (event.pathParameters && event.pathParameters.start) ? event.pathParameters.start : null;
+  var end = (event.pathParameters && event.pathParameters.end) ? event.pathParameters.end : null;
+  var filter = ((event.queryStringParameters != null) && (event.queryStringParameters.filter != null))?	
+	  event.queryStringParameters.filter:null;
+  if ((!end || !start) || (start > end)){
+      callback(null, {
+          statusCode: 400,
+          body: JSON.stringify({ message: 'Valid start/end args not passed to the summary report.' })
+      })
+  }
+	
+  Checkout.items(start, end, filter).then(function(data) {
+      console.log('(' + data.length + ') - items report successfully run');
+	  response.body = JSON.stringify(data);
+      callback(null, response);
+  }).catch(function(err) {
+      console.log('There was an error running the summary report');
+      console.error(err);
+      callback(err);
+  });
+};
+
 module.exports.unarchived = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
   var response = {

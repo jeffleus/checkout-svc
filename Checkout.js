@@ -198,6 +198,21 @@ module.exports.summary = function(start, end) {
 	});
 };
 
+module.exports.items = function(start, end, items) {
+	console.info(moduleName, 'fuelstation daily item summary report');
+	var itemlist = `${(items)?"'" + items + "'" : "null"}`;
+	console.log('ItemList: ', itemlist);
+	
+	//get the date using the offset for proper date only portion
+	//var sql = 'CALL item_summary(\'' + start + '\', \'' + end + '\', null);' ;
+	var sql = 'CALL item_summary(\'' + start + '\', \'' + end + '\', ' + itemlist + ');' ;
+	//	+ id + '\', \'' + JSON.stringify(now).substring(1,11) + '\')';
+	console.info (sql);
+	return sequelize.query(sql).then(function(result) {
+		return result;
+	});
+};
+
 module.exports.create = function(json) {
 	var _checkout = Checkout.build(json);
 //	json.CheckoutChoices.forEach(function(choiceJSON) {

@@ -156,6 +156,14 @@ functions:
           cors: true
           authorizer:
             arn: arn:aws:cognito-idp:us-west-2:236711959566:userpool/us-west-2_KMI3gTfQw
+  items:
+    handler: handler.items
+    timeout: 3
+    events:
+      - http:
+          path: report/checkouts/items/{start}/{end}
+          method: GET
+          cors: true
   archived:
     handler: handler.archived
     timeout: 3

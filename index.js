@@ -16,6 +16,9 @@ var checkout = {
 	]
 };
 
+
+var items = "3322,3320,3210";
+
 //var id = '93302';
 var sid = '905';
 //var filter = ('93265,93266').split(',');
@@ -33,7 +36,8 @@ var sid = '905';
 //Checkout.daily().then(function(result) {
 //Checkout.history(sid).then(function(result) {
 //Checkout.monthly(6, 2017).then(function(result) {
-Checkout.summary('2017-11-01', '2017-11-15').then(function(result) {
+//Checkout.summary('2017-11-01', '2017-11-15').then(function(result) {
+Checkout.items('2017-11-01', '2017-11-07', items).then(function(result) {
 	
 //Checkout.get(null, filter).then(function(result) {
 //Checkout.create(checkout).then(function(result) {
@@ -64,7 +68,7 @@ Checkout.summary('2017-11-01', '2017-11-15').then(function(result) {
 //        })
 //    })
 
-    console.log(result);
+    console.log("FOUND: ", result?result.length:0);
 	return;
 }).catch(function(err) {
 	console.error(err);
