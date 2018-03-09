@@ -17,13 +17,15 @@ var checkout = {
 };
 
 var id = '96562';
+var items = "3371,3325,3338";
 //var sid = '905';
 //var filter = ('93265,93266').split(',');
 //console.log("FILTER: ", filter);
 //console.log(mock);
 
+Checkout.items('2018-02-01', '2018-02-14', items).then(function(result) {
 //Checkout.create(checkout).then(function(result) {
-Checkout.get(id, null).then(function(result) {
+//Checkout.get(id, null).then(function(result) {
 //Checkout.today(false).then(function(result) {
 //Checkout.get(id).then(function(result) {
     
@@ -34,8 +36,9 @@ Checkout.get(id, null).then(function(result) {
 //Checkout.history(sid).then(function(result) {
 //Checkout.monthly(6, 2017).then(function(result) {
 	
-    console.log(result);
-	console.log(result.checkouts[0].CheckoutChoices);
+    //console.log(result);
+	//console.log(result.checkouts[0].CheckoutChoices);
+    console.log("FOUND: ", result?result.length:0);
 	return;
 }).catch(function(err) {
 	console.error(err);
