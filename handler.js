@@ -4,7 +4,6 @@ var Checkout = require('./Checkout');
 var mockDaily = require('./mockDaily');
 var mockUnarchived = require('./mockUnarchived');
 var mockArchived = require('./mockArchived');
-var SMS = require('./SMS');
 const AWS = require('aws-sdk');
 AWS.config.region = 'us-west-2';
 var sns = new AWS.SNS();
@@ -60,11 +59,7 @@ module.exports.create = (event, context, callback) => {
     var checkout;
     
     Checkout.create(json).then(function(c) {
-        console.log(moduleName, 'checkout created, sending sms alert to confirm');
         checkout = c;	//stash the checkout in a function scoped variable
-//        var msg = moduleName + ': successfully created a new checkout - ' + checkout.CheckoutID;
-//        return SMS.sendText(msg, '+13108771151');
-//    }).then(function(result) {
         response.body = JSON.stringify({
             message: 'Successfully created a new checkout: ' + checkout.CheckoutID,
             checkout: checkout
