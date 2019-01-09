@@ -4,10 +4,8 @@ var Checkout = require('./Checkout');
 var mockDaily = require('./mockDaily');
 var mockUnarchived = require('./mockUnarchived');
 var mockArchived = require('./mockArchived');
-var SMS = require('./SMS');
 const AWS = require('aws-sdk');
 AWS.config.region = 'us-west-2';
-var sns = new AWS.SNS();
 
 var moduleName = 'checkout-svc';
 
