@@ -20,7 +20,7 @@ service: duke-checkout-svc
 provider:
   name: aws
   role: arn:aws:iam::236711959566:role/lambda_callsheet
-  runtime: nodejs4.3
+  runtime: nodejs6.10
 
 # you can overwrite defaults here
   stage: prod
@@ -142,6 +142,16 @@ functions:
     events:
       - http:
           path: report/checkouts/monthly/{year}/{month}
+          method: GET
+          cors: true
+          authorizer:
+            arn: arn:aws:cognito-idp:us-west-2:236711959566:userpool/us-west-2_KMI3gTfQw
+  recharge:
+    handler: handler.recharge
+    timeout: 3
+    events:
+      - http:
+          path: report/checkouts/recharge/{year}/{month}
           method: GET
           cors: true
           authorizer:
